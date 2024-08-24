@@ -1,20 +1,23 @@
-import random
+import sys
+sys.path.append(f'{__file__}/../../../')
 import matplotlib.pyplot as plt
 import numpy as np
 
-def random_dataset(size: int, noise_probability: float, cluster_spread: float, min_coords: list[float], max_coords: list[float]):
+def random_dataset(size: int, cluster_spread: float, min_coords: list[float], max_coords: list[float]):
     dataset = []
     dims = len(min_coords)
     assert dims == len(max_coords)
+    num_seeds = np.random.randint(2, 5)
     for _ in range(size):
         while True:
-            if random.random() < noise_probability:
+            if len(dataset) < 2 * num_seeds:
                 other = None
-            else:
-                other = random.choice(dataset) if len(dataset) > 0 else None
-            delta = [random.uniform(-(max_coords[j]-min_coords[j]),(max_coords[j]-min_coords[j]))*cluster_spread for j in range(dims)]
+            elif len(dataset) >= 2 * num_seeds:
+                other_index = np.random.choice(len(dataset))
+                other = dataset[other_index]
+            delta = [np.random.uniform(-(max_coords[j]-min_coords[j]),(max_coords[j]-min_coords[j]))*cluster_spread for j in range(dims)]
             if other is None:
-                point = [random.uniform(min_coords[j], max_coords[j]) for j in range(dims)]
+                point = [np.random.uniform(min_coords[j], max_coords[j]) for j in range(dims)]
                 dataset.append(point)
                 break
             else:
@@ -22,14 +25,6 @@ def random_dataset(size: int, noise_probability: float, cluster_spread: float, m
                 dataset.append(new_position)
                 break
     return dataset
-
-def plot_dataset(dataset, color_function=None, ax=None):
-    ax = ax or plt.gca()
-    if color_function is not None:
-        colors = [color_function(i, x) for i, x in enumerate(dataset)]
-        ax.scatter([x[0] for x in dataset], [x[1] for x in dataset], c=colors)
-    else:
-        ax.scatter([x[0] for x in dataset], [x[1] for x in dataset])
     
 def dist(p: list[float], q: list[float]) -> float:
     return sum([(p[i] - q[i])**2 for i in range(len(p))])**0.5
@@ -39,7 +34,7 @@ def demo_dataset(size: int, kind: str, with_labels=False) -> list[list[float]] |
     labels = []
     match kind:
         case "uniform":
-            dataset = np.random.rand(size, 2).tolist()
+            dataset = np.random.uniform(-0.5, 0.5, (size, 2)).tolist()
             labels = np.zeros(size, dtype=int)
         case "normal":
             dataset = np.random.normal(0, 0.1, (size, 2)).tolist()
@@ -72,9 +67,9 @@ def demo_dataset(size: int, kind: str, with_labels=False) -> list[list[float]] |
                 radius = np.random.normal(r, std_r)
                 dataset.append([center[0] + radius * np.cos(angle), center[1] + radius * np.sin(angle)])
         case "two_circles":
-            r = 0.4
-            center_1 = [-0.5, 0]
-            center_2 = [0.5, 0]
+            r = 0.2
+            center_1 = [-0.25, 0]
+            center_2 = [0.25, 0]
             dataset = []
             labels = []
             for _ in range(size):
@@ -85,11 +80,11 @@ def demo_dataset(size: int, kind: str, with_labels=False) -> list[list[float]] |
                 center = center_1 if is_left else center_2
                 dataset.append([center[0] + radius * np.cos(angle), center[1] + radius * np.sin(angle)])
         case "three_lines":
-            length = 0.7
-            std_width = 0.03
-            center_1 = [0.5, -0.3]
-            center_2 = [0.2, -0.4]
-            center_3 = [0.25, 0.4]
+            length = 0.5
+            std_width = 0.02
+            center_1 = [0.3, -0.35]
+            center_2 = [0.1, -0.4]
+            center_3 = [0.15, 0.1]
             angle = np.pi * 3 / 4
             dataset = []
             labels = []
@@ -151,54 +146,65 @@ def demo_dataset(size: int, kind: str, with_labels=False) -> list[list[float]] |
                     y = radius * np.sin(angle)
                     dataset.append([x, y])
                 labels.append(part)
+        case "clusters":
+            cluster_count = 5
+            std = 0.1
+            dataset = []
+            labels = []
+            centers = [[0.3, -0.4], [-0.3, 0.3], [0.1, -0.1], [-0.4, -0.3], [0.4, 0.3]]
+            for _ in range(size):    
+                cluster = np.random.choice(cluster_count, p=[0.5, 0.2, 0.05, 0.1, 0.15])
+                center = centers[cluster]
+                dx = np.random.normal(0, std)
+                dy = np.random.normal(0, std)
+                x = center[0] + dx
+                y = center[1] + dy
+                dataset.append([x, y])
+                labels.append(cluster)
         case _:
             raise ValueError(f"Unknown kind {kind}")
     return (dataset, labels) if with_labels else dataset
 
 if __name__ == "__main__":
     #dataset = random_dataset(50, 0.2, 0.1, [0, 0], [10, 10])
-    labels = []
-    def color_function(i, x):
-        colors = [
-            "#FF8000",
-            "#FF0080",
-            "#8000FF",
-            "#80FF00",
-            "#0080FF",
-            "#00FF80",
-            "#FF80FF",
-            "#80FFFF",
-            "#FFFF80",
-            "#FF8080",
-            "#80FF80",
-            "#8080FF",
-        ]
-        return colors[labels[i] % len(colors)]
+    from dmml.clustering.plotting import plot_clusters
     
     plt.subplot(3, 3, 1)
     dataset, labels = demo_dataset(500, "uniform", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     plt.subplot(3, 3, 2)
     dataset, labels = demo_dataset(500, "normal", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     plt.subplot(3, 3, 3)
     dataset, labels = demo_dataset(500, "concentric", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     plt.subplot(3, 3, 4)
     dataset, labels = demo_dataset(500, "two_moons", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     plt.subplot(3, 3, 5)
     dataset, labels = demo_dataset(500, "two_circles", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     plt.subplot(3, 3, 6)
     dataset, labels = demo_dataset(500, "three_lines", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     plt.subplot(3, 3, 7)
     dataset, labels = demo_dataset(500, "two_spirals", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     plt.subplot(3, 3, 8)
     dataset, labels = demo_dataset(500, "smiley", with_labels=True)
-    plot_dataset(dataset, color_function)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
+    plt.subplot(3, 3, 9)
+    dataset, labels = demo_dataset(500, "clusters", with_labels=True)
+    clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
+    plot_clusters(dataset, clusters)
     
     plt.show()
     

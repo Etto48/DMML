@@ -1,7 +1,7 @@
-from random_dataset import random_dataset
+import sys
+sys.path.append(f'{__file__}/../../../')
 import matplotlib.pyplot as plt
 import numpy as np
-import random
 
 class Point:
     id = None
@@ -97,6 +97,7 @@ def optics(DB: list[list[int]], eps, MinPts):
     return DB, ret
 
 if __name__ == "__main__":
+    from dmml.clustering.datasets import random_dataset
     DB = random_dataset(100, 0.2, 0.1, [0, 0], [10, 10])
     DB, order = optics(DB, 40, 2)
     plt.subplot(2, 1, 1)

@@ -1,4 +1,6 @@
-from random_graph import random_graph, plot_graph
+import sys
+sys.path.append(f'{__file__}/../../../')
+from dmml.graph.random_graph import random_graph, plot_graph
 import numpy as np
 
 def neighbours(A: np.ndarray, i: int) -> list[int]:

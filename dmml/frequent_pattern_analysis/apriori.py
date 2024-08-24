@@ -1,5 +1,7 @@
 import itertools as it
-from preprocess import preprocess_csv
+import sys
+sys.path.append(f'{__file__}/../../../')
+from dmml.frequent_pattern_analysis.preprocess import preprocess_csv
 from tqdm import tqdm
 
 class FrequentPattern:
