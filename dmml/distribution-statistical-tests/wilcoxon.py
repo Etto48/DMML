@@ -26,6 +26,6 @@ def wilcoxon_test(distribution_a: list[float], distribution_b: list[float]) -> f
 
 if __name__ == "__main__":
     distribution_1 = np.random.normal(0, 1, 100).tolist()
-    distribution_2 = np.random.normal(-1, 1, 100).tolist()
+    distribution_2 = np.random.normal(0, 1, 100).tolist()
     p = wilcoxon_test(distribution_1, distribution_2)
     print(f"p-value: {p}")
