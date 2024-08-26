@@ -5,7 +5,6 @@ from dmml.clustering.plotting import plot_clusters
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import networkx as nx
-import random
 import numpy as np
 
 def dist_to_weight(dist: float) -> float:
@@ -57,6 +56,8 @@ def split_graph_spectral(graph: nx.Graph, indices: set[int], at_all_costs: bool 
 
 def relative_interconnectivity(graph: nx.Graph, cluster_a: set[int], cluster_b: set[int]) -> float:
     cut_size = nx.cut_size(graph, cluster_a, cluster_b, weight='weight')
+    if cut_size == 0:
+        return 0
     a_a, a_b = split_graph_spectral(graph, cluster_a)
     min_cut_size_a = nx.cut_size(graph, a_a, a_b, weight='weight')
     b_a, b_b = split_graph_spectral(graph, cluster_b)
@@ -152,5 +153,5 @@ if __name__ == "__main__":
     K = 5
     MIN_SIZE = 20
     MIN_CLUSTERS = 2
-    MIN_RI = 0.4
+    MIN_RI = 0.3
     clusters = chameleon(dataset, K, MIN_SIZE, MIN_CLUSTERS, MIN_RI, interactive=True)

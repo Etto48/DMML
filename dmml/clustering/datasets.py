@@ -147,18 +147,73 @@ def demo_dataset(size: int, kind: str, with_labels=False) -> list[list[float]] |
                     dataset.append([x, y])
                 labels.append(part)
         case "clusters":
-            cluster_count = 5
-            std = 0.1
             dataset = []
             labels = []
-            centers = [[0.3, -0.4], [-0.3, 0.3], [0.1, -0.1], [-0.4, -0.3], [0.4, 0.3]]
-            for _ in range(size):    
-                cluster = np.random.choice(cluster_count, p=[0.5, 0.2, 0.05, 0.1, 0.15])
+            centers = [
+                [0.15, 0.2],
+                [0.45, 0.2],
+                [0.3, 0.2],
+                [0.2, -0.5],
+                [0.2, -0.2],
+                [0.735, -0.23],
+                [0.785, -0.4],
+                [1.1, 0.2],
+                [1.1, -0.6],
+            ]
+            cluster_count = 9
+            for _ in range(size):
+                cluster = np.random.choice(cluster_count, p=[0.02, 0.02, 0.26, 0.15, 0.15, 0.05, 0.1, 0.05, 0.2])
                 center = centers[cluster]
-                dx = np.random.normal(0, std)
-                dy = np.random.normal(0, std)
-                x = center[0] + dx
-                y = center[1] + dy
+                match cluster:
+                    case 0:
+                        x = np.random.normal(center[0], 0.03)
+                        y = np.random.normal(center[1], 0.03)
+                    case 1:
+                        x = np.random.normal(center[0], 0.03)
+                        y = np.random.normal(center[1], 0.03)
+                    case 2:
+                        dr = np.random.normal(0, 0.02)
+                        angle = np.random.uniform(0, 2 * np.pi)
+                        x = center[0] + 0.4 * np.cos(angle) + dr
+                        y = center[1] + 0.2 * np.sin(angle) + dr
+                    case 3:
+                        l = np.random.uniform(-0.3, 0.3)
+                        r = np.random.uniform(-0.1, 0.1)
+                        x = center[0] + l
+                        y = center[1] + r
+                    case 4:
+                        l = np.random.uniform(-0.3, 0.3)
+                        r = np.random.uniform(-0.1, 0.1)
+                        x = center[0] + l
+                        y = center[1] + r
+                    case 5:
+                        r = np.random.normal(0.175, 0.02)
+                        angle = np.random.uniform(- np.pi / 2, np.pi / 2)
+                        x = center[0] + r * np.cos(angle)
+                        y = center[1] + r * np.sin(angle)
+                    case 6:
+                        r = np.random.normal(0.175, 0.02)
+                        angle = np.random.uniform(np.pi / 2, np.pi * 3 / 2)
+                        x = center[0] + r * np.cos(angle)
+                        y = center[1] + r * np.sin(angle)
+                    case 7:
+                        x = np.random.normal(center[0], 0.03)
+                        y = np.random.normal(center[1], 0.03)
+                    case 8:
+                        t = np.random.uniform(0, 1)
+                        cutoff = 0.48
+                        radius = 0.2
+                        offset = 0.05
+                        linear_len = 0.6
+                        linear_mul = linear_len / cutoff
+                        if t < cutoff:
+                            x = np.random.normal(center[0] - offset, 0.03)
+                            y = center[1] + t * linear_mul
+                        else:
+                            angle = (t - cutoff) / (1 - cutoff) * np.pi + np.pi / 2
+                            r = np.random.normal(radius, 0.03)
+                            x = center[0] + r * np.cos(angle) * 1.2
+                            y = center[1] + cutoff * linear_mul + radius + r * np.sin(angle)
                 dataset.append([x, y])
                 labels.append(cluster)
         case _:
@@ -166,7 +221,6 @@ def demo_dataset(size: int, kind: str, with_labels=False) -> list[list[float]] |
     return (dataset, labels) if with_labels else dataset
 
 if __name__ == "__main__":
-    #dataset = random_dataset(50, 0.2, 0.1, [0, 0], [10, 10])
     from dmml.clustering.plotting import plot_clusters
     
     plt.subplot(3, 3, 1)
