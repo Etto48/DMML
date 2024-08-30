@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 from dmml.graph.random_graph import random_graph, plot_graph
 import numpy as np
 

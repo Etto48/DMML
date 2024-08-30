@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 import numpy as np
 
 def cosine_similarity(x, a, b) -> float:

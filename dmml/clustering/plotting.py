@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 from dmml.utils.colors import RANDOM_COLORS, avg_colors
 from matplotlib import pyplot as plt
 

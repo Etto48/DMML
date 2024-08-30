@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 import matplotlib.pyplot as plt
 import numpy as np
 

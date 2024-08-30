@@ -1,0 +1,11 @@
+[project]
+name = "dmml"
+version = "0.1.0"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "networkx",
+]
+[tool.setuptools]
+packages = ["dmml"]

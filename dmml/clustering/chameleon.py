@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 from dmml.utils.colors import RANDOM_COLORS, str_to_rgb, rgb_to_name
 from dmml.clustering.plotting import plot_clusters
 from tqdm import tqdm

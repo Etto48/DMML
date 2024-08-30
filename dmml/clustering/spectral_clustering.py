@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 import numpy as np
 
 def spectral_projection(dataset: np.ndarray, num_dimensions: int) -> np.ndarray:

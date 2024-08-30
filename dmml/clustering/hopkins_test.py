@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 import numpy as np
 
 def dist(a: list[float], b: list[float]) -> float:

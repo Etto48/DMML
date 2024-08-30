@@ -1,6 +1,4 @@
 import itertools as it
-import sys
-sys.path.append(f'{__file__}/../../../')
 from dmml.frequent_pattern_analysis.preprocess import preprocess_csv
 from tqdm import tqdm
 

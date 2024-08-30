@@ -1,5 +1,3 @@
-import sys
-sys.path.append(f'{__file__}/../../../')
 from dmml.outlier_detection.angle_based import var_cosine_similarity
 import numpy as np
 
