@@ -3,16 +3,21 @@ sys.path.append(f'{__file__}/../../../')
 import matplotlib.pyplot as plt
 import numpy as np
 
-def random_dataset(size: int, cluster_spread: float, min_coords: list[float], max_coords: list[float]):
+def random_dataset(size: int, cluster_spread: float, min_coords: list[float], max_coords: list[float], n_clusters: int | None = None, seed: int | None = None) -> list[list[float]]:
     dataset = []
     dims = len(min_coords)
     assert dims == len(max_coords)
-    num_seeds = np.random.randint(2, 5)
+    if seed is not None:
+        np.random.seed(seed)
+    if n_clusters is not None:
+        num_seeds = n_clusters
+    else:
+        num_seeds = np.random.randint(2, 5)
     for _ in range(size):
         while True:
-            if len(dataset) < 2 * num_seeds:
+            if len(dataset) < num_seeds:
                 other = None
-            elif len(dataset) >= 2 * num_seeds:
+            else:
                 other_index = np.random.choice(len(dataset))
                 other = dataset[other_index]
             delta = [np.random.uniform(-(max_coords[j]-min_coords[j]),(max_coords[j]-min_coords[j]))*cluster_spread for j in range(dims)]
@@ -29,9 +34,11 @@ def random_dataset(size: int, cluster_spread: float, min_coords: list[float], ma
 def dist(p: list[float], q: list[float]) -> float:
     return sum([(p[i] - q[i])**2 for i in range(len(p))])**0.5
     
-def demo_dataset(size: int, kind: str, with_labels=False) -> list[list[float]] | tuple[list[list[float]], list[int]]:
+def demo_dataset(size: int, kind: str, with_labels=False, seed: int | None = None) -> list[list[float]] | tuple[list[list[float]], list[int]]:
     dataset = []
     labels = []
+    if seed is not None:
+        np.random.seed(seed)
     match kind:
         case "uniform":
             dataset = np.random.uniform(-0.5, 0.5, (size, 2)).tolist()

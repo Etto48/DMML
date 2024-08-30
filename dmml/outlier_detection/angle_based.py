@@ -131,7 +131,7 @@ if __name__ == "__main__":
     plt.scatter(dataset[:, 0], dataset[:, 1])
     for i in range(len(factors)):
         if i in outliers:
-            plt.scatter(dataset[i, 0], dataset[i, 1], color="red", marker="o")
+            plt.scatter(dataset[i, 0], dataset[i, 1], color="red", marker="x")
     
     plt.show()
     

@@ -10,6 +10,9 @@ import numpy as np
 def dist_to_weight(dist: float) -> float:
     return 1 / (dist + 1)
 
+def dist(a: np.ndarray, b: np.ndarray) -> float:
+    return np.linalg.norm(a - b)
+
 def knn_to_nx_graph(knn_list, indices: set[int]) -> nx.Graph:
     nx_graph = nx.Graph()
     for i, knn in enumerate(knn_list):
@@ -72,7 +75,7 @@ def relative_interconnectivity(graph: nx.Graph, cluster_a: set[int], cluster_b: 
     return cut_size * 2 / (min_cut_size_a + min_cut_size_b)
     
 
-def chameleon(dataset, K, min_size, min_clusters, min_ri, interactive=False):
+def chameleon(dataset, K: int, min_size: float, min_clusters: int, min_ri: float, interactive=False):
 
     knn_list = []
 
