@@ -19,30 +19,21 @@ def random_index_except(len_dataset: int, indices: list[int]) -> list[float]:
 def var_cosine_similarity(dataset: np.ndarray | list[list[float]], x: int | np.ndarray, iterations: int) -> float:
     if isinstance(x, int):
         i = x
-        if isinstance(dataset, np.ndarray):
-            x = dataset[i]
-        elif isinstance(dataset, list):
-            x = dataset[i]
-        else:
-            raise ValueError("Invalid type for dataset")
+        x = dataset[i]
     else:
         i = None
     values = []
-    if isinstance(dataset, np.ndarray):
-        dataset = dataset.tolist()
-    elif isinstance(dataset, list):
-        pass
-    else:
-        raise ValueError("Invalid type for dataset")
+    if isinstance(dataset, list):
+        dataset = np.array(dataset)
     for _ in range(iterations):
         if i is None:
-            a_index = random_index_except(len(dataset), [])
-            b_index = random_index_except(len(dataset), [a_index])
+            a_index = random_index_except(dataset.shape[0], [])
+            b_index = random_index_except(dataset.shape[0], [a_index])
         else:
-            a_index = random_index_except(len(dataset), [i])
-            b_index = random_index_except(len(dataset), [i, a_index])
-        a = dataset[a_index]
-        b = dataset[b_index]
+            a_index = random_index_except(dataset.shape[0], [i])
+            b_index = random_index_except(dataset.shape[0], [i, a_index])
+        a = dataset[a_index, :]
+        b = dataset[b_index, :]
         similarity = cosine_similarity(x, a, b)
         values.append(similarity)
     return np.var(values)
@@ -100,7 +91,7 @@ def angle_based_outlier_detection(dataset: np.ndarray, iterations: int, **kwargs
 
 if __name__ == "__main__":
     from matplotlib import pyplot as plt
-    from dmml.clustering.datasets import demo_dataset
+    from src.clustering.datasets import demo_dataset
     
     NUM_OUTLIERS = 10
     DATASET_SIZE = 500

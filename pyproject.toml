@@ -6,6 +6,7 @@ dependencies = [
     "matplotlib",
     "scipy",
     "networkx",
+    "tqdm",
 ]
 [tool.setuptools]
-packages = ["dmml"]
+package-dir = { "dmml" = "src" }

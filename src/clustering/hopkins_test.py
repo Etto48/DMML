@@ -44,8 +44,8 @@ def hopkins_test(dataset: list[list[float]], num_samples: int) -> float:
     return h
 
 if __name__ == "__main__":
-    from dmml.clustering.datasets import random_dataset, demo_dataset
-    from dmml.clustering.plotting import plot_dataset
+    from src.clustering.datasets import random_dataset, demo_dataset
+    from src.clustering.plotting import plot_dataset
     import matplotlib.pyplot as plt
     
     #dataset = random_dataset(500, 0.05, [0, 0], [10, 10])

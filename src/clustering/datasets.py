@@ -226,7 +226,7 @@ def demo_dataset(size: int, kind: str, with_labels=False, seed: int | None = Non
     return (dataset, labels) if with_labels else dataset
 
 if __name__ == "__main__":
-    from dmml.clustering.plotting import plot_clusters
+    from src.clustering.plotting import plot_clusters
     
     plt.subplot(3, 3, 1)
     dataset, labels = demo_dataset(500, "uniform", with_labels=True)
