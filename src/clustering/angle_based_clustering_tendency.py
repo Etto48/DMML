@@ -1,4 +1,4 @@
-from src.outlier_detection.angle_based import var_cosine_similarity
+from dmml.outlier_detection.angle_based import var_cosine_similarity
 import numpy as np
 from tqdm import tqdm
 
@@ -27,8 +27,8 @@ def angle_based_clustering_tendency(dataset: np.ndarray, num_samples: int) -> fl
     return a
 
 if __name__ == "__main__":
-    from src.clustering.datasets import random_dataset, demo_dataset
-    from src.clustering.plotting import plot_dataset
+    from dmml.clustering.datasets import random_dataset, demo_dataset
+    from dmml.clustering.plotting import plot_dataset
     import matplotlib.pyplot as plt
     
     #dataset = random_dataset(500, 0.05, [0, 0], [10, 10])

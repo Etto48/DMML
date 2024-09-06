@@ -1,5 +1,5 @@
 import itertools as it
-from src.frequent_pattern_analysis.preprocess import preprocess_csv
+from dmml.frequent_pattern_analysis.preprocess import preprocess_csv
 from tqdm import tqdm
 
 class FrequentPattern:

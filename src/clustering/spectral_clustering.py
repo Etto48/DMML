@@ -76,9 +76,9 @@ def spectral_projection(dataset: np.ndarray, num_dimensions: int, similarity_fun
     return eigvecs[:, indices]
     
 if __name__ == "__main__":
-    from src.clustering.datasets import random_dataset, demo_dataset
-    from src.clustering.k_means import k_means
-    from src.utils.colors import RANDOM_COLORS
+    from dmml.clustering.datasets import random_dataset, demo_dataset
+    from dmml.clustering.k_means import k_means
+    from dmml.utils.colors import RANDOM_COLORS
     import matplotlib.pyplot as plt
     N_DIM = 2
     N_CLUSTERS = 2

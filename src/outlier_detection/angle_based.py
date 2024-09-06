@@ -91,7 +91,7 @@ def angle_based_outlier_detection(dataset: np.ndarray, iterations: int, **kwargs
 
 if __name__ == "__main__":
     from matplotlib import pyplot as plt
-    from src.clustering.datasets import demo_dataset
+    from dmml.clustering.datasets import demo_dataset
     
     NUM_OUTLIERS = 10
     DATASET_SIZE = 500

@@ -1,4 +1,4 @@
-from src.graph.random_graph import random_graph, plot_graph
+from dmml.graph.random_graph import random_graph, plot_graph
 import numpy as np
 
 def neighbours(A: np.ndarray, i: int) -> list[int]:

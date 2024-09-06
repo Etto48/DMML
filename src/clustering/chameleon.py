@@ -1,5 +1,5 @@
-from src.utils.colors import RANDOM_COLORS, str_to_rgb, rgb_to_name
-from src.clustering.plotting import plot_clusters
+from dmml.utils.colors import RANDOM_COLORS, str_to_rgb, rgb_to_name
+from dmml.clustering.plotting import plot_clusters
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -149,7 +149,7 @@ def chameleon(dataset, K: int, min_size: float, min_clusters: int, min_ri: float
     return clusters
 
 if __name__ == "__main__":
-    from src.clustering.datasets import random_dataset, dist
+    from dmml.clustering.datasets import random_dataset, dist
     dataset = random_dataset(500, 0.05, [0, 0], [10, 10])
     K = 5
     MIN_SIZE = 20

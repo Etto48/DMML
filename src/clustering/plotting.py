@@ -1,4 +1,4 @@
-from src.utils.colors import RANDOM_COLORS, avg_colors
+from dmml.utils.colors import RANDOM_COLORS, avg_colors
 from matplotlib import pyplot as plt
 
 def plot_dataset(dataset, color_function=None, ax=None):
@@ -29,7 +29,7 @@ def plot_clusters(dataset: list[list[float]], clusters: list[set[int]], sparse_a
                 ax.plot([dataset[i][0], dataset[j][0]], [dataset[i][1], dataset[j][1]], color, alpha=alpha, lw=0.5)
     
 if __name__ == "__main__":
-    from src.clustering.datasets import demo_dataset
+    from dmml.clustering.datasets import demo_dataset
     dataset, labels = demo_dataset(500, "smiley", with_labels=True)
     clusters = [set([i for i, l in enumerate(labels) if l == label]) for label in set(labels)]
     plot_clusters(dataset, clusters)

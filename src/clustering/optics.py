@@ -95,7 +95,7 @@ def optics(DB: list[list[int]], eps, MinPts):
     return DB, ret
 
 if __name__ == "__main__":
-    from src.clustering.datasets import random_dataset
+    from dmml.clustering.datasets import random_dataset
     DB = random_dataset(100, 0.2, 0.1, [0, 0], [10, 10])
     DB, order = optics(DB, 40, 2)
     plt.subplot(2, 1, 1)
