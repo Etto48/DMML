@@ -2,7 +2,7 @@ from dmml.outlier_detection.angle_based import var_cosine_similarity
 import numpy as np
 from tqdm import tqdm
 
-def angle_based_clustering_tendency(dataset: np.ndarray, num_samples: int, manual_range: tuple[float, float] | None = None) -> float:
+def angle_based_clustering_tendency(dataset: np.ndarray, num_samples: int, manual_range: tuple[float, float] | None = None, n_points: int | None = None) -> float:
     N = dataset.shape[0]
     N_dim = dataset.shape[1]
     
@@ -16,9 +16,11 @@ def angle_based_clustering_tendency(dataset: np.ndarray, num_samples: int, manua
                     ranges[j][1] = dataset[i,j]
     else:
         ranges = [[manual_range[0], manual_range[1]] for _ in range(N_dim)]
+
+    n_points = n_points if n_points is not None else N // 10
     
-    p = [np.random.randint(0, N) for _ in tqdm(range(N // 10), "Generating p")]
-    q = [[np.random.uniform(ranges[j][0], ranges[j][1]) for j in range(N_dim)] for _ in tqdm(range(N // 10), "Generating q")]
+    p = [np.random.randint(0, N) for _ in tqdm(range(n_points), "Generating p")]
+    q = [[np.random.uniform(ranges[j][0], ranges[j][1]) for j in range(N_dim)] for _ in tqdm(range(n_points), "Generating q")]
     
     random_measures = num_samples
     
